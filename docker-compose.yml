@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  provider:
+    container_name: provider
+    restart: always
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    links:
+      - mongodb
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "7000:7000"    
+    networks:
+      - app-network
+
+  mongodb:
+    container_name: mongo
+    restart: always
+    image: mongo
+    networks:
+      - app-network
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+
+
+networks:
+  app-network:
+    driver: bridge
